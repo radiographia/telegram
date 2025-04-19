@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Декодер моноширинного текста</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f0f0f0; }
+    textarea { width: 100%; height: 10em; font-family: monospace; }
+    button { padding: 0.5em 1em; margin: 1em 0; }
+  </style>
+</head>
+<body>
+
+<h2>🎯 Декодер математического моноширинного текста</h2>
+
+<p><strong>Вставьте текст (𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎):</strong></p>
+<textarea id="input" placeholder="𝚑𝚎𝚕𝚕𝚘"></textarea>
+
+<button onclick="decode()">🔁 Декодировать</button>
+
+<p><strong>Результат:</strong></p>
+<textarea id="output" readonly></textarea>
+
+<script>
+function decode() {
+  const text = document.getElementById('input').value;
+  const invisibleSpace = '\u2800'; // ⠀
+
+  let result = '';
+  for (let ch of text) {
+    const code = ch.codePointAt(0);
+    if (code >= 0x1D68A && code <= 0x1D6A3) { // a-z
+      result += String.fromCharCode(code - 0x1D68A + 97);
+    } else if (code >= 0x1D670 && code <= 0x1D689) { // A-Z
+      result += String.fromCharCode(code - 0x1D670 + 65);
+    } else if (code >= 0x1D7F6 && code <= 0x1D7FF) { // 0-9
+      result += String.fromCharCode(code - 0x1D7F6 + 48);
+    } else if (ch === invisibleSpace) {
+      result += ' ';
+    } else {
+      result += ch;
+    }
+  }
+  document.getElementById('output').value = result;
+}
+</script>
+
+</body>
+</html>
